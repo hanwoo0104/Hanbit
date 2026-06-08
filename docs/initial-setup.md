@@ -177,6 +177,13 @@ npm run lint
 npm run build
 ```
 
+E2E까지 확인하려면 Playwright 브라우저를 설치한 뒤 테스트를 실행한다.
+
+```bash
+npx playwright install chromium
+npm run test:e2e
+```
+
 브라우저에서 확인할 기본 흐름은 다음과 같다.
 
 - `/` 홈 대시보드가 표시된다.

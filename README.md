@@ -55,13 +55,16 @@ npm run dev
 
 - [AGENTS.md](AGENTS.md): 제품/기술 아키텍처와 구현 규칙
 - [docs/design-system.md](docs/design-system.md): Hanbit Navy 디자인 시스템
+- [docs/initial-setup.md](docs/initial-setup.md): 새 머신 초기 환경 셋업
+- [docs/release-checklist.md](docs/release-checklist.md): MVP 릴리스 전 검증 체크리스트
 - [docs/tasks](docs/tasks): 순차 실행 태스크 로드맵
 
 ## Verification
 
-TASK-01 기준 검증 명령입니다.
+릴리스 전 기본 검증 명령입니다.
 
 ```bash
 npm run lint
 npm run build
+npm run test:e2e
 ```
