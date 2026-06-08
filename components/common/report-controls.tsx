@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Flag } from "lucide-react";
 
-import { createReportAction } from "@/lib/actions/community";
+import { createReportAction } from "@/lib/actions/reports";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 

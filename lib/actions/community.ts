@@ -7,7 +7,6 @@ import { requireUser } from "@/lib/auth/permissions";
 import {
   createComment,
   createCommunityPost,
-  createReport,
   hideComment,
   hideCommunityPost,
   togglePostReaction,
@@ -18,7 +17,6 @@ import {
   commentSchema,
   communityPostSchema,
   getFormString,
-  reportSchema,
 } from "@/lib/validators/post";
 
 type PostEditorState = {
@@ -44,14 +42,6 @@ function parseCommunityPostForm(formData: FormData) {
 function parseCommentForm(formData: FormData) {
   return commentSchema.safeParse({
     content: getFormString(formData, "content"),
-  });
-}
-
-function parseReportForm(formData: FormData) {
-  return reportSchema.safeParse({
-    targetType: getFormString(formData, "targetType"),
-    targetId: getFormString(formData, "targetId"),
-    reason: getFormString(formData, "reason"),
   });
 }
 
@@ -149,18 +139,4 @@ export async function togglePostReactionAction(postId: string) {
 
   revalidateCommunityPost(post.boardSlug, post.postId);
   redirect(`/community/${post.boardSlug}/${post.postId}`);
-}
-
-export async function createReportAction(formData: FormData) {
-  const user = await requireUser();
-  const parsed = parseReportForm(formData);
-
-  if (!parsed.success) {
-    throw new Error(parsed.error.issues[0]?.message ?? "신고 사유를 확인해 주세요.");
-  }
-
-  const report = await createReport(parsed.data, user.id);
-
-  revalidateCommunityPost(report.boardSlug, report.postId);
-  redirect(`/community/${report.boardSlug}/${report.postId}#reports`);
 }

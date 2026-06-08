@@ -2,6 +2,7 @@ import "server-only";
 
 import { auth } from "@/auth";
 import type { PostType, UserRole, UserStatus } from "@/lib/generated/prisma/enums";
+import { prisma } from "@/lib/prisma";
 
 type PermissionUser = {
   id: string;
@@ -38,7 +39,25 @@ export class ForbiddenError extends Error {
 
 export async function getCurrentUser() {
   const session = await auth();
-  return session?.user ?? null;
+
+  if (!session?.user) {
+    return null;
+  }
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+    select: {
+      id: true,
+      role: true,
+      status: true,
+      displayName: true,
+      studentNumber: true,
+    },
+  });
+
+  return user;
 }
 
 export async function requireUser() {

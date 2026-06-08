@@ -11,7 +11,6 @@ import { prisma } from "@/lib/prisma";
 import type {
   CommunityPostInput,
   CommentInput,
-  ReportInput,
 } from "@/lib/validators/post";
 import type { UserRole, UserStatus } from "@/lib/generated/prisma/enums";
 
@@ -872,85 +871,5 @@ export async function togglePostReaction(postId: string, userId: string) {
   return {
     postId: post.id,
     boardSlug: post.board.slug,
-  };
-}
-
-export async function createReport(input: ReportInput, reporterId: string) {
-  if (input.targetType === "post") {
-    const post = await prisma.post.findFirst({
-      where: {
-        id: input.targetId,
-        type: "community",
-        hidden: false,
-      },
-      select: {
-        id: true,
-        board: {
-          select: {
-            slug: true,
-          },
-        },
-      },
-    });
-
-    if (!post) {
-      notFound();
-    }
-
-    await prisma.report.create({
-      data: {
-        reporterId,
-        targetType: "post",
-        postId: post.id,
-        reason: input.reason,
-      },
-    });
-
-    return {
-      postId: post.id,
-      boardSlug: post.board.slug,
-    };
-  }
-
-  const comment = await prisma.comment.findFirst({
-    where: {
-      id: input.targetId,
-      hidden: false,
-      post: {
-        type: "community",
-        hidden: false,
-      },
-    },
-    select: {
-      id: true,
-      postId: true,
-      post: {
-        select: {
-          board: {
-            select: {
-              slug: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  if (!comment) {
-    notFound();
-  }
-
-  await prisma.report.create({
-    data: {
-      reporterId,
-      targetType: "comment",
-      commentId: comment.id,
-      reason: input.reason,
-    },
-  });
-
-  return {
-    postId: comment.postId,
-    boardSlug: comment.post.board.slug,
   };
 }
