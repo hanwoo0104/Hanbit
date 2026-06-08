@@ -3,8 +3,6 @@
 import Link from "next/link";
 import { useActionState } from "react";
 
-import type { PostEditorState } from "@/lib/actions/official-board";
-import type { OfficialBoardItem, OfficialPostDetail } from "@/lib/dal/official-board";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,7 +15,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
+export type PostEditorState = {
+  message?: string;
+  fieldErrors?: Partial<Record<string, string[]>>;
+};
+
 const initialState: PostEditorState = {};
+
+type PostEditorBoard = {
+  id: string;
+  name: string;
+};
 
 type PostEditorProps = {
   title: string;
@@ -26,13 +34,17 @@ type PostEditorProps = {
     previousState: PostEditorState,
     formData: FormData,
   ) => Promise<PostEditorState>;
-  boards: OfficialBoardItem[];
+  boards: PostEditorBoard[];
   submitLabel: string;
   cancelHref: string;
-  initialPost?: Pick<
-    OfficialPostDetail,
-    "title" | "content" | "boardId" | "pinned"
-  >;
+  initialBoardId?: string;
+  initialPost?: {
+    title: string;
+    content: string;
+    boardId: string;
+    pinned?: boolean;
+  };
+  showPinned?: boolean;
 };
 
 function FieldError({ errors }: { errors?: string[] }) {
@@ -50,10 +62,12 @@ export function PostEditor({
   boards,
   submitLabel,
   cancelHref,
+  initialBoardId,
   initialPost,
+  showPinned = true,
 }: PostEditorProps) {
   const [state, formAction, pending] = useActionState(action, initialState);
-  const selectedBoardId = initialPost?.boardId ?? boards[0]?.id ?? "";
+  const selectedBoardId = initialPost?.boardId ?? initialBoardId ?? boards[0]?.id ?? "";
 
   return (
     <Card className="mx-auto w-full max-w-3xl rounded-lg border border-border shadow-sm">
@@ -104,13 +118,12 @@ export function PostEditor({
             />
             <FieldError errors={state.fieldErrors?.content} />
           </div>
-          <label className="flex items-center gap-3 rounded-lg border border-border bg-muted/50 px-3 py-3 text-sm font-medium">
-            <Checkbox
-              name="pinned"
-              defaultChecked={initialPost?.pinned}
-            />
-            공지 상단 고정
-          </label>
+          {showPinned ? (
+            <label className="flex items-center gap-3 rounded-lg border border-border bg-muted/50 px-3 py-3 text-sm font-medium">
+              <Checkbox name="pinned" defaultChecked={initialPost?.pinned} />
+              공지 상단 고정
+            </label>
+          ) : null}
           {state.message ? (
             <p className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
               {state.message}
