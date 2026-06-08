@@ -202,6 +202,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## UI 컴포넌트 기준
 
+디자인 시스템의 세부 규칙은 [`docs/design-system.md`](docs/design-system.md)를 따른다. 구현 전 이 문서를 먼저 확인하고, 색상 토큰, shadcn/ui 설정, 컴포넌트 구조, 접근성 규칙은 디자인 시스템 문서를 우선한다.
+
 권장 컴포넌트는 다음과 같다.
 
 - `SiteHeader`: 로고, 주요 메뉴, 로그인/마이페이지 링크
