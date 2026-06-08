@@ -4,6 +4,8 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+# 아키텍처에 변화가 생기는 프롬프트가 입력되면 agents.md에도 수정사항을 항상 반영한다.
+
 # 한빛 학생 커뮤니티 아키텍처
 
 ## 제품 목표
