@@ -4,6 +4,7 @@ import type { Session } from "next-auth";
 
 import { logoutAction } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
+import { SiteNav } from "@/components/common/site-nav";
 import { cn } from "@/lib/utils";
 
 type SiteHeaderProps = {
@@ -11,7 +12,7 @@ type SiteHeaderProps = {
   variant?: "dark" | "light";
 };
 
-const navItems = [
+const navItems: [string, string][] = [
   ["홈", "/"],
   ["게시판", "/board"],
   ["커뮤니티", "/community"],
@@ -73,25 +74,7 @@ export function SiteHeader({ user, variant = "light" }: SiteHeaderProps) {
             )}
           </div>
         </div>
-        <nav
-          aria-label="주요 메뉴"
-          className="flex min-w-0 gap-1 overflow-x-auto whitespace-nowrap"
-        >
-          {navItems.map(([label, href]) => (
-            <Link
-              key={href}
-              href={href}
-              className={cn(
-                "rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                dark
-                  ? "text-dashboard-muted hover:bg-dashboard-surface-raised hover:text-dashboard-text"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground",
-              )}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <SiteNav items={navItems} dark={dark} />
         <div className="hidden items-center gap-2 lg:flex">
           {user ? (
             <>
