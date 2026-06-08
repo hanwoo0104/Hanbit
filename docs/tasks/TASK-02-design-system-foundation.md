@@ -22,7 +22,7 @@ TASK-01에서 프로젝트 기반과 의존성이 준비된다. 한빛 디자인
 ## Options Considered
 
 - 옵션 A: shadcn/ui primitive를 CLI로 생성하고 필요한 부분만 조정한다.
-  - 장점: Radix 접근성과 variant 구조를 빠르게 확보한다.
+  - 장점: `base-nova`의 Base UI 접근성과 variant 구조를 빠르게 확보한다.
   - 단점: 생성된 코드가 프로젝트 스타일과 다르면 정리가 필요하다.
 - 옵션 B: 모든 primitive를 직접 작성한다.
   - 장점: 코드가 작고 통제가 쉽다.

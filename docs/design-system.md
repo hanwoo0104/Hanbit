@@ -4,9 +4,9 @@
 
 ## 디자인 시스템 결정
 
-- 기본 시스템은 `shadcn/ui`, Radix UI Primitives, Tailwind CSS v4 theme tokens, `lucide-react` 조합으로 고정한다.
+- 기본 시스템은 `shadcn/ui` `base-nova`, Base UI primitives, Tailwind CSS v4 theme tokens, `lucide-react` 조합으로 고정한다.
 - `shadcn/ui`는 완성형 외부 UI 라이브러리처럼 숨겨서 쓰지 않고, `components/ui/*`에 복사해 프로젝트가 소유하는 primitive 컴포넌트로 사용한다.
-- 복잡한 상호작용이 필요한 Dialog, Dropdown Menu, Select, Tabs, Tooltip, Sheet, Popover는 Radix 기반 shadcn 컴포넌트를 우선 사용한다.
+- 복잡한 상호작용이 필요한 Dialog, Dropdown Menu, Select, Tabs, Tooltip, Sheet, Popover는 Base UI 기반 shadcn `base-nova` 컴포넌트를 우선 사용한다.
 - Tailwind CSS v4의 `@theme`와 `:root`/`.dark` CSS 변수를 사용해 색상, radius, shadow, font token을 관리한다.
 - 아이콘은 `lucide-react`를 우선 사용한다. 직접 SVG를 만들거나 텍스트로 아이콘 역할을 대신하지 않는다.
 
@@ -14,7 +14,7 @@
 
 - shadcn/ui Next.js: `https://v3.shadcn.com/docs/installation/next`
 - shadcn/ui theming: `https://ui.shadcn.com/docs/theming`
-- Radix UI Primitives: `https://www.radix-ui.com/primitives/docs/overview/introduction`
+- Base UI: `https://base-ui.com/react/overview/quick-start`
 - Tailwind CSS theme variables: `https://tailwindcss.com/docs/theme`
 
 ## 시각 방향
@@ -297,7 +297,7 @@
 - 텍스트와 배경 대비는 WCAG AA를 목표로 한다.
 - 모든 interactive element는 keyboard focus가 보여야 한다. focus ring은 `brand-ring`을 사용한다.
 - 터치 타깃은 최소 44px 높이를 목표로 한다. dense table의 보조 action도 icon-only면 36px 미만으로 만들지 않는다.
-- Dialog, Sheet, Dropdown, Select는 Radix 기반 컴포넌트를 사용해 focus trap, escape close, keyboard navigation을 보장한다.
+- Dialog, Sheet, Dropdown, Select는 Base UI 기반 shadcn 컴포넌트를 사용해 focus trap, escape close, keyboard navigation을 보장한다.
 - skeleton, loading, empty, error state를 각 주요 화면에 둔다.
 - 색상만으로 상태를 전달하지 않고 text label이나 icon을 함께 제공한다.
 

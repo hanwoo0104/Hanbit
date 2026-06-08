@@ -38,8 +38,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - 데이터베이스와 ORM: PostgreSQL, `prisma@7.8.0`, `@prisma/client@7.8.0`, `@prisma/adapter-pg`, `pg`
 - 인증: Auth.js v5 beta, `next-auth@5.0.0-beta.31`, `@auth/prisma-adapter`
 - 입력 검증과 보안: `zod`, `bcryptjs`, `server-only`
-- UI 보조: `lucide-react`, `clsx`, `class-variance-authority`
-- 개발과 검증: `@types/pg`, `tsx`, `@playwright/test`
+- UI 보조: `@base-ui/react`, `lucide-react`, `clsx`, `class-variance-authority`, `tailwind-merge`
+- 개발과 검증: `@types/pg`, `tsx`, `dotenv`, `@playwright/test`
 - 단위 테스트가 필요해지면 `vitest`를 추가한다. MVP 문서 기준에서는 선택 의존성으로 둔다.
 
 구현자는 관련 공식 문서를 우선한다.
@@ -56,6 +56,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Prisma 설정 파일은 `prisma.config.ts`, 스키마는 `prisma/schema.prisma`, Prisma Client 싱글턴은 `lib/prisma.ts`에 둔다.
 - Prisma Client output은 `lib/generated/prisma`로 고정한다.
 - Prisma 7 기준으로 `@prisma/adapter-pg`와 `pg`를 사용하고, `DATABASE_URL`은 `prisma.config.ts`와 `lib/prisma.ts`가 공유한다.
+- 로컬 개발 DB는 `compose.yml`의 Docker PostgreSQL을 사용한다. 운영 또는 클라우드 호스팅 PostgreSQL로 전환할 때는 Prisma 스키마를 유지하고 `DATABASE_URL`만 교체한다.
 - 필수 환경 변수는 `DATABASE_URL`, `AUTH_SECRET`, `SCHOOL_EMAIL_DOMAIN`이다. OAuth 또는 SSO를 추가할 때만 provider별 secret을 추가한다.
 - 데이터 접근은 `lib/dal/*`에 둔다. DAL 파일은 `import "server-only"`를 사용하고, DB row 전체가 아니라 화면에 필요한 DTO만 반환한다.
 - mutation은 `lib/actions/*`의 얇은 Server Action에서 시작하고, 실제 권한 검사와 DB 변경은 DAL 함수에 위임한다.

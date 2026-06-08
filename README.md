@@ -22,6 +22,27 @@ cp .env.example .env
 npx auth secret
 ```
 
+로컬 개발용 PostgreSQL을 Docker로 실행합니다.
+
+```bash
+npm run db:up
+```
+
+Docker 그룹 권한이 현재 터미널에 반영되지 않았다면 새 터미널로 다시 열거나 `sudo docker compose up -d postgres`를 사용합니다.
+
+Prisma 스키마를 적용하고 seed 데이터를 넣습니다.
+
+```bash
+npm run db:migrate
+npm run db:seed
+```
+
+seed 계정은 모두 비밀번호 `Hanbit123!`를 사용합니다.
+
+- `student@example.school.kr`
+- `council@example.school.kr`
+- `admin@example.school.kr`
+
 개발 서버를 실행합니다.
 
 ```bash
