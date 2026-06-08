@@ -1,65 +1,83 @@
-import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+import { auth } from "@/auth";
+import { logoutAction } from "@/lib/actions/auth";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+const navItems = [
+  ["마이페이지", "/mypage"],
+  ["커뮤니티 글쓰기", "/community/write"],
+  ["공식 글쓰기", "/board/write"],
+  ["관리자", "/admin"],
+];
+
+export default async function Home() {
+  const session = await auth();
+  const user = session?.user;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <main className="min-h-screen bg-background px-4 py-12">
+      <section className="mx-auto grid w-full max-w-3xl gap-6">
+        <div className="grid gap-2">
+          <p className="text-sm font-medium text-primary">한빛 MVP</p>
+          <h1 className="text-3xl font-semibold text-foreground">
+            인증과 권한 확인
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-muted-foreground">
+            TASK-05에서 홈 대시보드로 교체되기 전까지 로그인 상태와 보호 route를
+            확인하는 화면입니다.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        <Card className="rounded-lg border border-border">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold">
+              {user ? `${user.displayName}님` : "로그인이 필요합니다"}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4">
+            {user ? (
+              <>
+                <div className="grid gap-2 text-sm text-muted-foreground">
+                  <p>역할: {user.role}</p>
+                  <p>상태: {user.status}</p>
+                </div>
+                <form action={logoutAction}>
+                  <Button type="submit" variant="outline">
+                    로그아웃
+                  </Button>
+                </form>
+              </>
+            ) : (
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href="/login"
+                  className="inline-flex h-10 items-center justify-center rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80"
+                >
+                  로그인
+                </Link>
+                <Link
+                  href="/signup"
+                  className="inline-flex h-10 items-center justify-center rounded-lg border border-border bg-background px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                >
+                  회원가입
+                </Link>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+        <div className="grid gap-2 sm:grid-cols-2">
+          {navItems.map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              className="rounded-lg border border-border bg-card px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+            >
+              {label}
+            </Link>
+          ))}
         </div>
-      </main>
-    </div>
+      </section>
+    </main>
   );
 }
